@@ -1,0 +1,5 @@
+langsmith == 0.5.2
+langchain_classic ==  1.0.0
+duckdb
+duckduckgo-search
+ddgs
