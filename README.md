@@ -1,3 +1,12 @@
+---
+license: apache-2.0
+title: Search engine
+sdk: streamlit
+emoji: 🔥
+colorFrom: purple
+colorTo: pink
+short_description: Search engine with llm
+---
 # LangChain Search Chat — Streamlit app
 
 A small Streamlit chat application that uses LangChain agents and community tools to search the web (DuckDuckGo), fetch summaries from Wikipedia, and retrieve research papers from arXiv — powered by Groq LLM (via `langchain_groq`).
