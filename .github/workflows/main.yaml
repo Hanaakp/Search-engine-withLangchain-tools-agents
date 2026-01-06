@@ -1,35 +1,43 @@
 name: Sync to Hugging Face hub
+
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
   sync-to-hub:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           lfs: true
 
-      - name: Push to Hugging Face Space (rebase then push)
+      - name: Sync to Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           set -e
 
+          # Configure git identity
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Add HF remote (token auth)
+          # Add Hugging Face remote (authenticated)
           git remote add huggingface https://hana-fathima-25:$HF_TOKEN@huggingface.co/spaces/hana-fathima-25/Serchengine
 
-          # Fetch HF's existing main branch (README/default files)
+          # Fetch existing HF Space content
           git fetch huggingface main
 
-          # Rebase your main onto HF main (integrate remote commits)
-          git rebase huggingface/main
+          # Merge HF Space history, keep GitHub files on conflict
+          git merge huggingface/main \
+            --allow-unrelated-histories \
+            -X ours \
+            -m "Sync Hugging Face Space with GitHub"
 
-          # Push your HEAD to HF main
+          # Push to Hugging Face
           git push huggingface HEAD:main
