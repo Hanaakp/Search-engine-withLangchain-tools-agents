@@ -28,7 +28,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           # Add Hugging Face remote (authenticated)
-          git remote add huggingface https://hana-fathima-25:$HF_TOKEN@huggingface.co/spaces/hana-fathima-25/Serchengine
+          git remote add huggingface https://hana-fathima-25:$HF_TOKEN@huggingface.co/spaces/hana-fathima-25/Searchengine-with-llm
 
           # Fetch existing HF Space content
           git fetch huggingface main
