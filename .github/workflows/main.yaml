@@ -2,8 +2,6 @@ name: Sync to Hugging Face hub
 on:
   push:
     branches: [main]
-
-  # to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
@@ -14,7 +12,24 @@ jobs:
         with:
           fetch-depth: 0
           lfs: true
-      - name: Push to hub
+
+      - name: Push to Hugging Face Space (rebase then push)
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: git push https://hana-fathima-25:$HF_TOKEN@huggingface.co/spaces/hana-fathima-25/Serchengine main
+        run: |
+          set -e
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Add HF remote (token auth)
+          git remote add huggingface https://hana-fathima-25:$HF_TOKEN@huggingface.co/spaces/hana-fathima-25/Serchengine
+
+          # Fetch HF's existing main branch (README/default files)
+          git fetch huggingface main
+
+          # Rebase your main onto HF main (integrate remote commits)
+          git rebase huggingface/main
+
+          # Push your HEAD to HF main
+          git push huggingface HEAD:main
